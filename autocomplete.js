@@ -29,6 +29,17 @@ var autoComplete = (function(){
     }
   };
 
+  function rebuildCache(cb) {
+    cachedData = new Trie()
+    buildCache(cb)
+  }
+
+  function normalize (str) {
+    str = str.toLowerCase()
+    str = .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    return str
+  }
+
   function buildInsertableData(doc){
     var word = "";
     var lowerCased = "";
@@ -48,6 +59,9 @@ var autoComplete = (function(){
     configuration.dataFields.forEach(function(item){
       data.push(doc[item]);
     });
+
+    // normalize data
+    lowerCased = lowerCased.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
 
     var itemToCache = {"word": lowerCased, "data": data};
     itemToCache.data.originalWord = word;
@@ -77,6 +91,8 @@ var autoComplete = (function(){
   }
 
   constructor.prototype = {
+    normalize: normalize,
+    rebuildCache: rebuildCache,
     getResults: function(string, cb){
       cachedData.getWordsWithData(string.toLowerCase(), maximumResults, function(err, result){
         if(err){
