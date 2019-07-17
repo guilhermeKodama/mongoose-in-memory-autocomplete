@@ -1,7 +1,7 @@
 {
   "@gkodama/package-name": "mongoose-in-memory-autocomplete",
   "main": "./main.js",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "dependencies": {
     "JSON2": "^0.1.0",
     "mongoose": "3.8.11"
